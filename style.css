@@ -1,18 +1,46 @@
 body {
-    background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+    background: #f5f5f0;
+    background-image: 
+        radial-gradient(circle at 20% 20%, rgba(255, 193, 7, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 193, 7, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 70%, rgba(255, 193, 7, 0.08) 0%, transparent 50%);
     min-height: 100vh;
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+}
+
+/* Adicionando um padrão de post-its no fundo */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(45deg, #ffc107 25%, transparent 25%),
+        linear-gradient(-45deg, #ffc107 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ffc107 75%),
+        linear-gradient(-45deg, transparent 75%, #ffc107 75%);
+    background-size: 120px 120px;
+    background-position: 0 0, 0 60px, 60px -60px, -60px 0px;
+    opacity: 0.03;
+    z-index: -1;
 }
 
 .container {
-    background: #fff;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
     padding: 2.5rem 2rem 2rem 2rem;
     border-radius: 18px;
-    box-shadow: 0 8px 32px rgba(60, 60, 120, 0.18);
+    box-shadow: 
+        0 8px 32px rgba(60, 60, 120, 0.18),
+        0 0 0 1px rgba(255, 193, 7, 0.1);
+    border: 2px solid rgba(255, 193, 7, 0.2);
     width: 100%;
     max-width: 400px;
     min-width: 320px;
@@ -20,10 +48,29 @@ body {
 
 h1 {
     text-align: center;
-    color: #2d3a4b;
+    color: #333;
     margin-bottom: 1.5rem;
     font-weight: 700;
     letter-spacing: 1px;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-shadow: 2px 2px 4px rgba(255, 193, 7, 0.3);
+    position: relative;
+}
+
+h1::before {
+    content: '📝';
+    margin-right: 10px;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ffc107, transparent);
 }
 
 #task-form {
@@ -35,31 +82,36 @@ h1 {
 #task-input {
     flex: 1;
     padding: 0.7rem 1rem;
-    border: 1px solid #d1d5db;
+    border: 2px solid rgba(255, 193, 7, 0.3);
     border-radius: 8px;
     font-size: 1rem;
     outline: none;
-    transition: border 0.2s;
+    transition: all 0.2s;
+    background: rgba(255, 255, 255, 0.9);
 }
 
 #task-input:focus {
-    border-color: #66a6ff;
+    border-color: #ffc107;
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
 }
 
 #task-form button {
-    background: #66a6ff;
-    color: #fff;
+    background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+    color: #333;
     border: none;
     border-radius: 8px;
     padding: 0 1.2rem;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
 }
 
 #task-form button:hover {
-    background: #4e8edb;
+    background: linear-gradient(135deg, #ffb300 0%, #ffa000 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
 }
 
 #task-list {
@@ -72,18 +124,46 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #f7fafd;
+    background: linear-gradient(135deg, #fff59d 0%, #ffeb3b 50%, #ffc107 100%);
     border-radius: 8px;
     margin-bottom: 0.7rem;
-    padding: 0.7rem 1rem;
-    box-shadow: 0 2px 8px rgba(102, 166, 255, 0.06);
-    transition: background 0.2s;
+    padding: 0.8rem 1rem;
+    box-shadow: 
+        0 3px 8px rgba(255, 193, 7, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.2s;
+    border: 1px solid rgba(255, 193, 7, 0.4);
+    position: relative;
+    transform: rotate(-0.5deg);
+}
+
+.task-item:nth-child(even) {
+    transform: rotate(0.5deg);
+}
+
+.task-item:nth-child(3n) {
+    transform: rotate(-0.3deg);
+}
+
+.task-item:hover {
+    transform: rotate(0deg) scale(1.02);
+    box-shadow: 
+        0 5px 15px rgba(255, 193, 7, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .task-item.completed {
-    background: #e0f7fa;
+    background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 50%, #d5d5d5 100%);
     text-decoration: line-through;
-    color: #8ca0b3;
+    color: #666;
+    opacity: 0.7;
+}
+
+.task-item span {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    color: #333;
+    font-weight: 500;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
 .task-actions {
@@ -92,13 +172,21 @@ h1 {
 }
 
 .action-btn {
-    background: none;
-    border: none;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 193, 7, 0.3);
     cursor: pointer;
     font-size: 1.1rem;
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    transition: background 0.2s;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 .action-btn.complete {
@@ -109,16 +197,68 @@ h1 {
     color: #e74c3c;
 }
 
+.action-btn.complete:hover {
+    background: rgba(46, 204, 64, 0.1);
+    border-color: #2ecc40;
+}
+
+.action-btn.delete:hover {
+    background: rgba(231, 76, 60, 0.1);
+    border-color: #e74c3c;
+}
+
 .action-btn:hover {
     background: #e3e9f0;
 }
 
+/* Responsividade melhorada para o tema post-it */
 @media (max-width: 500px) {
     .container {
-        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        padding: 1.5rem 1rem;
         min-width: unset;
+        margin: 1rem;
     }
+    
     h1 {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
     }
+    
+    .task-item {
+        padding: 0.7rem 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .task-item span {
+        font-size: 0.9rem;
+    }
+    
+    .action-btn {
+        font-size: 1rem;
+        padding: 0.25rem 0.4rem;
+    }
+    
+    #task-form {
+        gap: 0.3rem;
+    }
+    
+    #task-input {
+        font-size: 0.9rem;
+        padding: 0.6rem 0.8rem;
+    }
+    
+    #task-form button {
+        padding: 0 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Animação suave para a rotação dos post-its */
+@keyframes postItFloat {
+    0%, 100% { transform: rotate(-0.5deg) translateY(0); }
+    50% { transform: rotate(0.5deg) translateY(-2px); }
+}
+
+.task-item:hover {
+    animation: postItFloat 2s ease-in-out infinite;
 }

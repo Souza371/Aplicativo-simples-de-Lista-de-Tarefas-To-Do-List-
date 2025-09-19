@@ -3,6 +3,30 @@ document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('task-input');
     const list = document.getElementById('task-list');
 
+    // Função para salvar tarefas no localStorage
+    function saveTasks() {
+        const tasks = [];
+        const taskItems = list.querySelectorAll('.task-item');
+        taskItems.forEach(item => {
+            const text = item.querySelector('span').textContent;
+            const completed = item.classList.contains('completed');
+            tasks.push({ text, completed });
+        });
+        localStorage.setItem('todoTasks', JSON.stringify(tasks));
+    }
+
+    // Função para carregar tarefas do localStorage
+    function loadTasks() {
+        const savedTasks = localStorage.getItem('todoTasks');
+        if (savedTasks) {
+            const tasks = JSON.parse(savedTasks);
+            tasks.forEach(task => {
+                const taskEl = createTaskElement(task.text, task.completed);
+                list.appendChild(taskEl);
+            });
+        }
+    }
+
     function createTaskElement(taskText, completed = false) {
         const li = document.createElement('li');
         li.className = 'task-item' + (completed ? ' completed' : '');
@@ -20,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
         completeBtn.onclick = function () {
             li.classList.toggle('completed');
             completeBtn.innerHTML = li.classList.contains('completed') ? '✔️' : '✅';
+            saveTasks(); // Salva automaticamente
         };
 
         const deleteBtn = document.createElement('button');
@@ -28,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteBtn.innerHTML = '🗑️';
         deleteBtn.onclick = function () {
             li.remove();
+            saveTasks(); // Salva automaticamente
         };
 
         actions.appendChild(completeBtn);
@@ -45,6 +71,10 @@ document.addEventListener('DOMContentLoaded', function () {
             list.appendChild(taskEl);
             input.value = '';
             input.focus();
+            saveTasks(); // Salva automaticamente
         }
     });
+
+    // Carrega as tarefas salvas quando a página é carregada
+    loadTasks();
 });
